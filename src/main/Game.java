@@ -1,5 +1,9 @@
 package main;
 
+import entities.Player;
+
+import java.awt.*;
+
 /**
  * This class binds all the component together, such as GameWindow, GamePanel
  */
@@ -13,12 +17,18 @@ public class Game implements Runnable {
     private int frames = 0;
     private int updates = 0;
     private long lastChecked = System.currentTimeMillis();
+    private Player player;
 
     public Game() {
-        gamePanel = new GamePanel();
+        initClasses();
+        gamePanel = new GamePanel(this);
         GameWindow gameWindow = new GameWindow(gamePanel);
         gamePanel.requestFocus();
         startGameLoop();
+    }
+
+    private void initClasses() {
+        player = new Player(200, 200);
     }
 
     private void startGameLoop() {
@@ -27,8 +37,10 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        gamePanel.updateGame();
+        player.update();
     }
+
+    public void render(Graphics g) {player.render(g);}
 
     @Override
     public void run() {
@@ -64,5 +76,8 @@ public class Game implements Runnable {
                 updates = 0;
             }
         }
+    }
+    public Player getPlayer() {
+        return player;
     }
 }
