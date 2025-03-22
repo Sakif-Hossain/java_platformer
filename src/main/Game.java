@@ -22,7 +22,7 @@ public class Game implements Runnable {
     private LevelHandler levelHandler;
 
     public static final int TILE_DEFAULT_SIZE = 32;
-    public static final float SCALE = 2f;
+    public static final float SCALE = 1.5f;
     public static final int TILES_IN_WIDTH = 26;
     public static final int TILES_IN_HEIGHT = 14;
     public static final int TILE_SIZE = (int) (TILE_DEFAULT_SIZE * SCALE);
@@ -39,7 +39,7 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        player = new Player(200, 200);
+        player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
         levelHandler = new LevelHandler(this);
     }
 
