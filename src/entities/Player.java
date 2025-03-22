@@ -1,10 +1,9 @@
 package entities;
 
-import javax.imageio.ImageIO;
+import utils.LoadSave;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static utils.Constants.PlayerConstants.*;
 
@@ -12,7 +11,6 @@ public class Player extends Entity {
     private BufferedImage[][] animation;
     private int animationTick, animationIndex, animationSpeed = 15;
     private int playerAction = JUMP;
-    private int playerDirection = -1;
     private boolean moving = false, attacking = false;
     private boolean up, down, left, right;
     private float playerSpeed = 2.0f;
@@ -90,24 +88,12 @@ public class Player extends Entity {
     }
 
     private void loadAnimation() {
-        InputStream is = getClass().getResourceAsStream("/player_sprites.png");
-        try {
-            BufferedImage img = ImageIO.read(is);
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-            animation = new BufferedImage[9][6];
-            for (int row = 0; row < animation.length; row++) {
-                for (int col = 0; col < animation[row].length; col++) {
-                    animation[row][col] = img.getSubimage(col*64, row*40, 64, 40);
-                }
-            }
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+        animation = new BufferedImage[9][6];
+        for (int row = 0; row < animation.length; row++) {
+            for (int col = 0; col < animation[row].length; col++) {
+                animation[row][col] = img.getSubimage(col*64, row*40, 64, 40);
             }
         }
     }

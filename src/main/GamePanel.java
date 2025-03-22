@@ -3,15 +3,11 @@ package main;
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
-import static utils.Constants.PlayerConstants.*;
-import static utils.Constants.Directions.*;
+import static main.Game.GAME_HEIGHT;
+import static main.Game.GAME_WIDTH;
 
 /**
  * Drawing things that we need to show in the frame.
@@ -30,10 +26,12 @@ public class GamePanel extends JPanel {
     }
 
     private void setPanelSize() {
-        Dimension screenSize = new Dimension(1280, 800);
+        Dimension screenSize = new Dimension(GAME_WIDTH, GAME_HEIGHT);
         setMinimumSize(screenSize);
         setMaximumSize(screenSize);
         setPreferredSize(screenSize);
+
+        System.out.println(screenSize.width + "x" + screenSize.height);
     }
 
     public void updateGame() {
