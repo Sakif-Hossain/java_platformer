@@ -6,8 +6,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static utils.Constants.Directions.*;
-import static utils.Constants.Directions.DOWN;
 import static utils.Constants.PlayerConstants.*;
 
 public class Player extends Entity {
@@ -15,7 +13,7 @@ public class Player extends Entity {
     private int animationTick, animationIndex, animationSpeed = 15;
     private int playerAction = JUMP;
     private int playerDirection = -1;
-    private boolean moving = false;
+    private boolean moving = false, attacking = false;
     private boolean up, down, left, right;
     private float playerSpeed = 2.0f;
 
@@ -43,16 +41,32 @@ public class Player extends Entity {
             animationIndex++;
             if (animationIndex >= GetNumberOfSprite(playerAction)) {
                 animationIndex = 0;
+                attacking = false;
             }
         }
     }
 
     private void setAnimation() {
+        int animationStart = playerAction;
+
         if (moving) {
             playerAction = RUNNING;
         } else {
             playerAction = IDLE;
         }
+
+        if (attacking) {
+            playerAction = ATTACK;
+        }
+
+        if (animationStart != playerAction) {
+            resetAnimationTick();
+        }
+    }
+
+    private void resetAnimationTick() {
+        animationIndex = 0;
+        animationTick = 0;
     }
 
     private void updatePosition() {
@@ -96,6 +110,14 @@ public class Player extends Entity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void resetDirBool() {
+        left = right = down = up = false;
+    }
+
+    public void setAttacking(Boolean attacking) {
+        this.attacking = attacking;
     }
 
     public boolean isUp() {
