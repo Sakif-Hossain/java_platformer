@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static utils.Constants.PlayerConstants.*;
+import static utils.HelperMethods.CanMove;
 
 public class Player extends Entity {
     private BufferedImage[][] animation;
@@ -14,6 +15,7 @@ public class Player extends Entity {
     private boolean moving = false, attacking = false;
     private boolean up, down, left, right;
     private float playerSpeed = 2.0f;
+    private int[][] levelData;
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -31,8 +33,6 @@ public class Player extends Entity {
         g.drawImage(animation[playerAction][animationIndex], (int)x, (int)y, width, height, null);
         drawHitBox(g);
     }
-
-
 
     private void updateAnimationTick() {
         animationTick++;
@@ -70,21 +70,29 @@ public class Player extends Entity {
     }
 
     private void updatePosition() {
-
         moving = false;
+        float xSpeed = 0, ySpeed = 0;
+
+        if (!left && !right && !up && !down) {
+            return;
+        }
 
         if (left && !right) {
-            x -= playerSpeed;
-            moving = true;
+            xSpeed = -playerSpeed;
         } else if (right && !left) {
-            x += playerSpeed;
-            moving = true;
+            xSpeed = playerSpeed;
         }
+
         if (up && !down) {
-            y -= playerSpeed;
-            moving = true;
+            ySpeed = -playerSpeed;
         } else if (down && !up) {
-            y += playerSpeed;
+            ySpeed = playerSpeed;
+        }
+
+        if (CanMove(x+xSpeed, y+ySpeed, width, height, levelData)) {
+            System.out.println("xSpeed: " + xSpeed + " ySpeed: " + ySpeed);
+            this.x += xSpeed;
+            this.y += ySpeed;
             moving = true;
         }
     }
@@ -98,6 +106,10 @@ public class Player extends Entity {
                 animation[row][col] = img.getSubimage(col*64, row*40, 64, 40);
             }
         }
+    }
+
+    public void loadLevelData(int[][] levelData) {
+        this.levelData = levelData;
     }
 
     public void resetDirBool() {

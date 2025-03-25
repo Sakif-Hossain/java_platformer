@@ -7,8 +7,11 @@ public class Level {
         this.levelData = levelData;
     }
 
-
     public int getSpriteData(int x, int y) {
         return levelData[y][x];
+    }
+
+    public int[][] getLevelData() {
+        return levelData;
     }
 }
